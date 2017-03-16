@@ -19,7 +19,7 @@ function addProperty(object, property) {
 }
 
 function invokeMethod(object, method) {
-  object.method();
+  object[method]();
   //method is a string that contains the name of a method on the object
   //invoke this method
   //nothing needs to be returned
@@ -32,7 +32,7 @@ function multiplyMysteryNumberByFive(mysteryNumberObject) {
 }
 
 function deleteProperty(object, property) {
-  delete object.property;
+  delete object[property];
   return object;
   //remove the property from the object
   //return the object
@@ -45,13 +45,13 @@ function newUser(name, email, password) {
 }
 
 function hasEmail(user) {
-  return user.email != false;
+  return user.hasOwnProperty('email') && !!user.email;
   //return true if the user has a value for the property 'email'
   //otherwise return false
 }
 
 function hasProperty(object, property) {
-  return object[property] != false;
+  return object.hasOwnProperty(property) && !!object[property];
   //return true if the object has the value of the property argument
   //property is a string
   //otherwise return false
@@ -91,11 +91,9 @@ function setUsersToPremium(users) {
 }
 
 function sumUserPostLikes(user) {
-  return user.posts.map(function(a) {
-    return a;
-  }).reduce(function(a, b) {
-    return a.likes + b.likes;
-  });
+  return user.posts.reduce(function(a, b) {
+    return {likes: a.likes + b.likes};
+  }).likes;
   //user has an array property called 'posts'
   //posts is an array of post objects
   //each post object has an integer property called 'likes'
@@ -107,7 +105,7 @@ function addCalculateDiscountPriceMethod(storeItem) {
   storeItem.calculateDiscountPrice = function() {
     return this.price - (this.price * this.discountPercentage);
   };
-  return storeItem.calculateDiscountPrice();
+  return storeItem;
   //add a method to the storeItem object called 'calculateDiscountPrice'
   //this method should multiply the storeItem's 'price' and 'discountPercentage' to get the discount
   //the method then subtracts the discount from the price and returns the discounted price
